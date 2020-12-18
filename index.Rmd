@@ -2,7 +2,7 @@
 title: "Contagem de palavras das Constituições Estaduais dos Estados Unidos: Revisitando o banco de dados de Clouse - Trabalho Final - MQCP"
 author: "Amanda Lopes; Ana Vaz; Bárbara Maia; Isabel Eirado"
 date: "Dezembro/2020"
-output: ioslides_presentation
+output: slidy_presentation
 ---
 
 ```{r setup, include=FALSE}
@@ -37,26 +37,21 @@ library(sf)
 a) de que forma as ideias e prioridades políticas vêm evoluindo nos 50 estados;
 b) de que forma os estados vêm se adaptando às necessidades de novas ações políticas, sociais, domésticas e externas.
 - Pergunta: é possível observar padrões de mudança nas Constituições Estaduais dos 50 estados americanos ao longo do tempo?
-<style>
-body {
-text-align: justify}
-</style>
 
-## Objeto  ####
+
+## Objeto e Objetivos  ####
+
+### Objeto
 
 - A mudança constitucional no federalismo estadunidense
 
-## Objetivos  ####
+### Objetivos
 
 - Objetivo principal: Analisar a evolução de ideias e prioridades políticas nos 50 estados estadunidenses a partir das mudanças constitucionais
 - Objetivos específicos: 
 1. Observar mudanças constitucionais a partir das variações das palavras totais das Constituições;
 2. Verificar a tendência a mudança constitucional a partir do número de Constituições implementadas ao longo do tempo e;
 3. Observar, a partir de um índice, a mudança proporcional entre os três poderes nas constituições estaduais. 
-<style>
-body {
-text-align: justify}
-</style>
 
 ## Método  ####
 
@@ -68,12 +63,10 @@ text-align: justify}
 
 **H1**: *Há maior variação no número de palavras das Constituições Estaduais correntes, em relação às Constituições anteriores.*
 
-<style>
-body {
-text-align: justify}
-</style>
+---
 
 ### Variáveis analisadas:  ####
+
 1. state - nome dos estados da Federação.
 2. abbreviation - abreviação dos nomes dos Estados.
 3. statehood - informa o ano em que o estado passou a integrar a Federação dos Estados Unidos da América.
@@ -84,12 +77,8 @@ text-align: justify}
 8. executive - descreve as funções, estrutura, poderes e limitações do Poder Executivo
 9. judicial - descreve as funções e poderes dos sistemas de tribunais estaduais e dos funcionários do Poder Judiciário
 
-<style>
-body {
-text-align: justify}
-</style>
-
 ## Método ####
+
 - Para as análises, além do uso da estatística descritiva para compreender os dados analisados, utilizou-se:
   - um índice de mudança proporcional entre os poderes, para avaliar como os três poderes tem se comportado, em termo de número de palavras, nas constituições estaduais;
   - um teste de hipótese t, a fim de comparar o tamanho (em termos de número de palavras) das Constituições Atuais e a média do tamanho das Constituições Históricas (test t);
@@ -97,12 +86,8 @@ text-align: justify}
 - Reproducibilidade - códigos disponíveis em: 
 <https://github.com/isabel-eirado/trabalhofinal-slides.git>
 
-<style>
-body {
-text-align: justify}
-</style>
-
 ## Visualização e Análise de dados ####
+
 - Diante do objetivo de compreender as mudanças constitucionais, esta seção será dividida em 3 partes:
 
 1. Análise das mudanças constitucionais pelo número total de palavras nas constituições
@@ -117,10 +102,7 @@ state_const <-  state_const %>%
   left_join(States_and_Abbreviations, state_const, by = "state") 
 ```
 
-<style>
-body {
-text-align: justify}
-</style>
+---
 
 ### Mapa interativo com informações gerais sobre as Constituições Estaduais dos Estados Unidos ####
 
@@ -201,13 +183,20 @@ mapa_interativo %>%
 
 ```
 
-<style>
-body {
-text-align: justify}
-</style>
+---
 
 ### Gráfico 1 - Total de palavras das constituições vigentes por estado ####
+
 - Gráfico feito para identificar a diferença do número de palavras das constituições vigentes em cada Estado.
+
+```{r, echo=FALSE, message = FALSE}
+#Manipulando os dados: selecionando e filtrando as informações de interesse a partir da base de dados, e, em seguida, as colunas de interesse usando o pacote dplyr.
+state_const_current_total_words <- state_const %>% 
+add_count(state) %>% #criando coluna que informe o total de constituições de cada estado
+select(state, constitution_year, current_constitution, total_words, state_number, abbreviation) %>% #selecionando as variaveis de interesse - estado, ano da Constituição, Constituição atual e total de palavras
+  filter(current_constitution == 1) #filtrando apenas as constituições vigentes
+```
+
 ```{r paged.print=TRUE, echo=FALSE, warning=FALSE, message = FALSE}
 options(scipen = 999)
 state_const_current_total_words %>% 
@@ -220,17 +209,19 @@ state_const_current_total_words %>%
        y = "Total de palavras") #nomeando os eixos
 ```
 
+---
+
+### Gráfico 1 - Comentários ####
+
 - A partir do gráfico, percebe-se que:
 1. O Alabama é um outlier em relação ao total de palavras
 2. A Constituição de Vermont é a menor em termos de número de palavras 
 3. O Texas tem a segunda maior Constituição em termos de número de palavras
 
-<style>
-body {
-text-align: justify}
-</style>
+---
 
 ### Gráfico 2 - Variação do total de palavras das constituições por estado
+
 - Gráfico feito para observar se o tempo é um fator relevante para gerar mudança no número de palvaras totais das constituições.
 - A variação do número de palavras das constituições é feita a partir do desvio padrão.
 
@@ -254,12 +245,10 @@ filter(state != "Alabama") %>% #removendo o alabama por ser um outlier
 
 - Há indícios de que o tempo e o número de palavras contribuem com mudanças constitucionais. 
 
-<style>
-body {
-text-align: justify}
-</style>
+---
 
 ### Gráfico 3 - Total de palavras por Constituição
+
 - Gráfico feito para identificar o grau de correlação entre o ano da Constituição e o total de palavras das Constituições.
 ```{r, echo=FALSE, warning=FALSE, message = FALSE}
 state_const %>%
@@ -278,12 +267,10 @@ stat_cor(aes(), method = "pearson",
 
 - Identificamos que há correlação entre o ano da Constituição e o número de palavras, ou seja, as Constituições tendem a crescer em número de palavras ao longo do tempo.
 
-<style>
-body {
-text-align: justify}
-</style>
+---
 
 ### Teste T para verificar as hipóteses ####
+
 - Teste-T utilizado para comparar o tamanho (em termos de número de palavras) das constituições atuais e a média do tamanho das constituições históricas.
 
 ```{r, echo=FALSE, message = FALSE}
@@ -317,27 +304,27 @@ constituicoes_novas <- constituicoes_testehipotese %>%
 
 valor_novas <- constituicoes_novas$total_words
 ```
+
 - Tabela com o Teste-T e informações sobre o p-valor
+
 ```{r message=TRUE, paged.print=TRUE, echo=FALSE, message = FALSE}
 # Realizando o teste T
 t.test(x=media_antigas, y=valor_novas, paired = TRUE)
 ```
 
-<style>
-body {
-text-align: justify}
-</style>
-
 ---
 
-- Gráfico com o Teste-T para visualização do grau de confiança entre as variáveis
+### Gráfico com o Teste-T para visualização do grau de confiança entre as variáveis
+
 ```{r paged.print=TRUE, echo=FALSE, message = FALSE}
 #Gráfico com o teste t
 plot(t.test(media_antigas,valor_novas, mu = 0))
 ```
 
 ## Análise das mudanças constitucionais pelo número de constituições promulgadas
+
 - Seguimos para análise das mudanças constitucionais a partir do número de Constituições promulgadas por cada estado dos EUA.
+
 ```{r, echo=FALSE, message = FALSE}
 #Criando tabela para analisar o total de constituições de cada estado
 const_eua_painel <- state_const  %>%
@@ -351,12 +338,8 @@ const_eua_painel <- state_const  %>%
   arrange(desc(numero_total_constituicoes)) #ordenando a tabela
 ```
 
-<style>
-body {
-text-align: justify}
-</style>
-
 ### Gráfico 4 - Número de Constituições por cada estado estadunidense ####
+
 - Objetivamos identificar a quantidade de constituições totais que cada estado da Federação teve e verificar a propensão a mudanças constitucionais a partir desse valor.
 
 ```{r, fig.height=6, fig.width=8, echo=FALSE, warning=FALSE, message = FALSE}
@@ -377,12 +360,10 @@ const_eua_painel %>%
 
 ```
 
-<style>
-body {
-text-align: justify}
-</style>
 
 ---
+
+### Gráfico 4 - Comentários
 
 - A partir do Gráfico percebemos que:
 1. Los Angeles é o Estado mais propenso a promover mudanças constitucionais
@@ -391,12 +372,11 @@ text-align: justify}
 ```{r paged.print=TRUE, echo=FALSE, message = FALSE}
 const_eua_painel %>% filter(numero_total_constituicoes ==2)
 ```
-<style>
-body {
-text-align: justify}
-</style>
+
+---
 
 ### Gráfico 5 - Relação entre número de Constituições por estado e data de criação do estado ####
+
 - Objetivamos medir a relação entre a criação do estado e o número de constituições promulgadas, isto é, se a data de criação do estado também influencia em sua propensão à mudança constitucional.
 
 ```{r, fig.height=6, fig.width=8, echo=FALSE, warning=FALSE, message = FALSE}
@@ -409,21 +389,13 @@ const_eua_painel %>%
   theme_classic()  #definindo o tema classico
 ```
 
-<style>
-body {
-text-align: justify}
-</style>
-
----
 
 - Dada a dispersão entre os pontos do gráfico, não foi possível notar relação entre a data de criação do estado e a propensão a mudança constitucional. 
 
-<style>
-body {
-text-align: justify}
-</style>
+---
 
 ### Gráfico 6 - Correlação entre o numero de constituições e a data de criação do estado
+
 - Objetivamos medir a correlação entre o número de constituições que cada estado já teve aprovada e a data de criação do Estado.
 
 ```{r, fig.height=6, fig.width=6, echo=FALSE, warning=FALSE, message = FALSE}
@@ -441,10 +413,6 @@ state_const %>%
 
 - Dada a dispersão do gráfico e como o p-valor é menor do que 0,05, é possível descartar a hipótese de que quanto mais antiga a data de criação do estado mais propenso ele é a promover mudanças constitucionais.
 
-<style>
-body {
-text-align: justify}
-</style>
 
 ## Análise das mudanças constitucionais a partir do Índice de Mudança Proporcional dos Poderes ####
 
@@ -466,6 +434,9 @@ imp_j = judicial/powers
 $$
 
 ---
+
+### Criando o Índice de Mudança Proporcional dos Poderes
+
 ONDE:
 
 - IMP = Índice de Mudança Proporcional dos Poderes
@@ -475,7 +446,6 @@ ONDE:
 - executive, legislative e judicial = quantidade de palavras destinada respectivamente às categorias "Executive", "Legislative" e "Judicial" em cada Constituição
 - powers = somatório das palavras destinadas aos três poderes - Executivo + Legislativo + Judiciário - em cada Constituição
 
----
 - O IMP fornece a medida de porporção de cada um dos poderes em relação ao total dedicado aos três em cada Constituição adotada ou emendada pelos 50 estados.
 
 
@@ -494,8 +464,10 @@ constituicoes_poderes <- state_const %>%
 ##criando o índice de mudança proporcional do judiciário em relação à soma dos poderes
 ```
 
+---
 
 ### Gráfico 7 - Relação entre os poderes e as constituições promulgadas por estado ####
+
 - Objetivamos identificar a relação entre a quantidade de palavras em cada Constituição referente aos poderes e o ano de promulgação das constituições.
 
 ```{r,  fig.height=5, fig.width=8, echo=FALSE, warning=FALSE, message = FALSE}
@@ -509,10 +481,13 @@ constituicoes_poderes %>%
   theme_classic() #deixando clean
 ```
 
----
+
 - A partir do gráfico é possível identificar que há uma tendência a aumentar o número de regras formais voltadas aos três poderes ao longo do tempo.
 
+---
+
 ### Gráfico 8 - Indices por ano constitucional e estado ####
+
 - O gráfico informa sobre a relação entre o valor de cada um dos índices de mudança proporcional por estado e ano de promulgação da Constituição.
 
 ```{r echo=FALSE, fig.height=5, fig.width=9, paged.print=TRUE, warning=FALSE, message = FALSE}
@@ -545,10 +520,12 @@ constituicoes_poderes_grafico5 %>%ggplot(aes(x= constitution_year, y= valores, g
 #determinando o tamanho das fontes dos labels
 ```
 
----
 - Analisando o gráfico é possível identificar tendência a crescimento da participação constitucional dos poderes no tangente à quantidade de palavras referentes a eles.
 
+---
+
 ### Gráfico 9 - Poderes pelo ano da Constituição ####
+
 - Por fim, analisamos se o total de palavras referentes aos três poderes cresceu ao longo do tempo.
 ```{r fig.height=5, fig.width=9, paged.print=TRUE, echo=FALSE, warning=FALSE, message = FALSE}
 constituicoes_poderes %>%
@@ -565,8 +542,10 @@ constituicoes_poderes %>%
         axis.title.y = element_text(size = 10)) #definindo o tamanho das fontes dos textos dos eixos
 ```
 
----
+
 - O gráfico indica uma tendência a crescimento do número de palavras que pautam regras formais para os três Poderes.
+
+---
 
 ### TESTE DE CONFIANÇA - Alpha de Cronbach a partir dos IMPs ####
 
@@ -590,25 +569,27 @@ psych::alpha(tabela_para_alpha, check.keys = TRUE)
 alpha1 <- psych::alpha(tabela_para_alpha, check.keys = TRUE)
 ```
 
-- Dado o alpha de 0,83, conclui-se, a partir do teste, que há uma ótima relação entre as variáveis relativas os Três Poderes.  
+- Dado o alpha de aproximadamente 0,83, conclui-se, a partir do teste, que há uma ótima relação entre as variáveis relativas os Três Poderes.  
 
-# Conclusões ####
+## Conclusões ####
 
 - A partir das análises, identificamos que:
 1. A variação temporal e o número total de palavras influenciam nas mudanças constitucionais na medida em que, como observado, a quantidade de palavras nas constituições tende a crescer ao longo do tempo.
 2. O Alabama é um outlier na medida em que dispõe de um total de palavras absurdamente maior do que qualquer outro estado.
----
 3. Los Angeles é o estado mais propenso a mudanças constitucionais, a partir do histórico da quantidade de constituições já elaboradas no Estado. Por outro lado, temos 18 Estados que tiveram apenas duas constituições, apresentando menor propensão a mudança constitucional.
 4. O ano de criação do estado aparenta não influenciar na propensão a mudança constitucional.
 5. Há uma tendência de crescimento da regulamentação dos três poderes na medida em que tanto os índices de mudança proporcional dos poderes quanto o total de palavras abordando o assunto evidenciam essa mudança.
+
 ---
+
+### Conclusão
+
 - Ademais, identificamos que as variáveis relativas aos três poderes estão bem relacionadas, fortalecendo a hipótese de que há uma tendência ao aumento de regras formais por meio das constituições voltadas aos Três Poderes.
 
 - Observamos, ainda, a comprovação da hipótese alternativa na medida em que o teste T indica diferença estatisticamente significativa.
- 
----
+
 - Destacamos, ainda, a necessidade de análise qualitativa dos dados, pois eles foram estruturados de forma a aglomerar elementos que poderiam ser interessantes para comparação. Um exemplo é a variável discriminação, que abarca tanto regras formais que combatem qualquer tipo de discriminação, seja ela racial, de gênero, de sexualidade, etc., quanto leis voltadas a reforças segregações. Sendo assim, a estruturação dos dados dificulta a elaboração de inferências.
----
+
 - Por fim, sugerimos para estudos futuros o aprofundamento da análise qualitativa ao ponto em que é preciso englobar, para além da quantidade de número de palavras, outros aspectos institucionais, legais e sociais que permitam melhor compreender o processo de mudança constitucional nos 50 estados.
 
 
@@ -621,8 +602,6 @@ alpha1 <- psych::alpha(tabela_para_alpha, check.keys = TRUE)
 - CLOUSE, Julia Gervaise-Rubicam. Converting the Texts of the US State Constitutions into Quantifiable Data: A Text Analytics Project. 2019. Tese de Doutorado. George Mason University.
 
 - DEALEY, J.Q. Growth of American State Constitutions: From 1776 to the End of the Year 1914. Ithaca, NY: Cornell University Library, 2009.
-
----
 
 - DE GRAZIA, A. State constitutions: Are they growing longer. State Government, 26(4), 82-83, 1954.
 
