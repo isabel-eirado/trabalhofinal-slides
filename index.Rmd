@@ -214,7 +214,7 @@ state_const_current_total_words %>%
 ### Gráfico 1 - Comentários ####
 
 - A partir do gráfico, percebe-se que:
-1. O Alabama é um outlier em relação ao total de palavras
+1. O Alabama é um outlier em relação ao total de palavras, na medida em que dispõe de um total de palavras maior do que qualquer outro estado. Por isso, para fins estatísticos, foi excluído de algumas das análises posteriores. 
 2. A Constituição de Vermont é a menor em termos de número de palavras 
 3. O Texas tem a segunda maior Constituição em termos de número de palavras
 
@@ -243,7 +243,7 @@ filter(state != "Alabama") %>% #removendo o alabama por ser um outlier
   
 ```
 
-- Há indícios de que o tempo e o número de palavras contribuem com mudanças constitucionais. 
+- Ao investigar de que forma esse conjunto de dados está variando, precebe-se que a Califórnia é o Estado que apresenta a maior variação em relação a média de palavras totais. Enquanto estados como Alaska, Minnesota, Wisconsin, Vermont, Indiana e South Dakota parecem ser os estados com o menor número de mudanças constitucionais.
 
 ---
 
@@ -265,7 +265,8 @@ stat_cor(aes(), method = "pearson",
        y = "Ano da Constituição") 
 ```
 
-- Identificamos que há correlação entre o ano da Constituição e o número de palavras, ou seja, as Constituições tendem a crescer em número de palavras ao longo do tempo.
+- Na correlação de Pearson acima, o R = 0,61. Há uma correlação moderada entre as observações. 
+- Apesar de uma notável proximidade entre os números de palavras nas constituições entre os anos de 1800 e 1900, as mudanças mais recentes tem valores totais de palavras dispersos entre si. 
 
 ---
 
@@ -576,7 +577,7 @@ alpha1 <- psych::alpha(tabela_para_alpha, check.keys = TRUE)
 - A partir das análises, identificamos que:
 1. A variação temporal e o número total de palavras influenciam nas mudanças constitucionais na medida em que, como observado, a quantidade de palavras nas constituições tende a crescer ao longo do tempo.
 2. O Alabama é um outlier na medida em que dispõe de um total de palavras absurdamente maior do que qualquer outro estado.
-3. Los Angeles é o estado mais propenso a mudanças constitucionais, a partir do histórico da quantidade de constituições já elaboradas no Estado. Por outro lado, temos 18 Estados que tiveram apenas duas constituições, apresentando menor propensão a mudança constitucional.
+3. O histórico da quantidade de constituições já elaboradas no Estado ajuda a compreender as mudanças constitucionais, ao ponto em que alguns estados como Los Angeles tiveram um grande número de constituintes enquanto outros estados tiveram apenas duas. Para explorar melhor esses dados, sugerimos pesquisas qualitativas, a fim de identificar fatores políticos, econômicos e sociais que possam ter levado a essas diferenças no total de constituições de cada estado. 
 4. O ano de criação do estado aparenta não influenciar na propensão a mudança constitucional.
 5. Há uma tendência de crescimento da regulamentação dos três poderes na medida em que tanto os índices de mudança proporcional dos poderes quanto o total de palavras abordando o assunto evidenciam essa mudança.
 
